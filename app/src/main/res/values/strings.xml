@@ -2,4 +2,8 @@
     <string name="app_name">SnowSpeed</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_ride">RideActivity</string>
+    <string name="ride_name">Поездка $1%s</string>
+    <string name="status_value">Статус $1%s</string>
+    <string name="speed_value">Скорость $1%s</string>
+    <string name="location_points_saved_count">Точек сохранено $1%d</string>
 </resources>

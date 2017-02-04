@@ -1,5 +1,7 @@
 package gekkot.com.snowspeed.ui;
 
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 
 import gekkot.com.snowspeed.R;
 import gekkot.com.snowspeed.data.Movement;
+import gekkot.com.snowspeed.data.Ride;
 
 public class RideActivity extends AppCompatActivity {
 
@@ -32,6 +35,22 @@ public class RideActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 
 }
