@@ -1,5 +1,7 @@
 package gekkot.com.snowspeed.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -51,6 +53,11 @@ public class RideActivity extends AppCompatActivity {
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {}
+    }
+
+    public static void startRideActivity(Context context) {
+        Intent start_about_intent = new Intent(context, RideActivity.class);
+        context.startActivity(start_about_intent);
     }
 
 }
