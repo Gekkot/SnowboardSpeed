@@ -16,8 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import gekkot.com.snowspeed.R;
+import gekkot.com.snowspeed.data.DistanceHelper;
 import gekkot.com.snowspeed.data.Movement;
 import gekkot.com.snowspeed.data.Ride;
 
@@ -65,10 +67,26 @@ public class RideActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void onChangeLocation(){
+        int movementsCount = rideMovementsArray.size();
+        if( movementsCount> 1){
+            Movement movement1 = rideMovementsArray.get(movementsCount - 1);
+            Movement movement2 = rideMovementsArray.get(movementsCount - 2);
+            long timeDif = movement1.getTime() - movement2.getTime();
+            double distance = DistanceHelper.INSTANCE.distFrom(movement1.getLocation(), movement2.getLocation());
+            double seconds = timeDif/1000;
+            double speed = distance / seconds;
+        }
+    }
+
     private class MyLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc) {
+            long time = Calendar.getInstance().getTime().getTime();
+            Movement movement = new Movement(time, loc, 1);
+            rideMovementsArray.add(movement);
+            onChangeLocation();
         }
 
         @Override
