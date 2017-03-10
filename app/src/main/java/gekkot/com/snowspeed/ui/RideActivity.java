@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.github.anastr.speedviewlib.SpeedView;
 
@@ -26,6 +28,8 @@ import gekkot.com.snowspeed.R;
 import gekkot.com.snowspeed.data.DistanceHelper;
 import gekkot.com.snowspeed.data.Movement;
 import gekkot.com.snowspeed.data.Ride;
+import gekkot.com.snowspeed.db.DBOpenHelper;
+import gekkot.com.snowspeed.db.SQLRequestsGenerator;
 
 public class RideActivity extends AppCompatActivity {
 
@@ -38,6 +42,8 @@ public class RideActivity extends AppCompatActivity {
     @BindView(R.id.speedView)
     SpeedView speedView;
 
+    Ride ride;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,8 @@ public class RideActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ride = new Ride();
+        ride.startRide();
 
 
 
@@ -53,8 +61,25 @@ public class RideActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                ride.endRide();
+                DBOpenHelper dbOpenHelper = new DBOpenHelper(RideActivity.this);
+                SQLiteDatabase writableDatabase = dbOpenHelper.getWritableDatabase();
+                try {
+                    SQLRequestsGenerator.INSTANCE.addRide(writableDatabase, ride);
+                } catch (Exception e) {
+
+                }
+
+                for (Movement movement : rideMovementsArray) {
+                    try {
+                        SQLRequestsGenerator.INSTANCE.addMovement(writableDatabase, movement);
+                    } catch (Exception e) {
+
+                    }
+                    rideMovementsArray.clear();
+                }
+                Toast.makeText(RideActivity.this, "save points:" + rideMovementsArray.size(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -103,7 +128,7 @@ public class RideActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(Location loc) {
             long time = Calendar.getInstance().getTime().getTime();
-            Movement movement = new Movement(time, loc, 1);
+            Movement movement = new Movement(time, loc, ride.getRideId());
             rideMovementsArray.add(movement);
             onChangeLocation();
         }
