@@ -11,8 +11,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
-    public DBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    private final static int VERSION = 1;
+    private final static String DATABASE_NAME = "rides.db";
+
+    public DBOpenHelper(Context context) {
+        super(context, DATABASE_NAME, null, VERSION);
     }
 
     public DBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version,
@@ -27,8 +30,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        deleteAllData(sqLiteDatabase);
     }
 
     public void deleteAllData(SQLiteDatabase sqLiteDatabase) {

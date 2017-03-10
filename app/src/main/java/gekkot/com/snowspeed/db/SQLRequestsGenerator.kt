@@ -17,7 +17,7 @@ object SQLRequestsGenerator {
     fun getCreateRideTableRequest(): String {
 
         return "CREATE TABLE $RIDE_TABLE_NAME(" +
-                "id long primary key autoincrement," +
+                "id integer primary key," +
                 "name text," +
                 "startTime long," +
                 "endTime long" +
@@ -27,11 +27,11 @@ object SQLRequestsGenerator {
     fun getCreateMovementPointTableRequest(): String {
 
         return "CREATE TABLE $POINTS_TABLE_NAME(" +
-                "pointId long primary key autoincrement," +
+                "pointId integer primary key autoincrement," +
                 "time long," +
                 "latitude float," +
                 "longitude float," +
-                "rideId  long" +
+                "rideId  integer" +
                 ");"
     }
 
@@ -45,6 +45,7 @@ object SQLRequestsGenerator {
 
     fun addRide(db: SQLiteDatabase, ride: Ride) {
         val contentValues = ContentValues()
+        contentValues.put("id", ride.rideId)
         contentValues.put("name", ride.name)
         contentValues.put("startTime", ride.startTime)
         db.insert(RIDE_TABLE_NAME, null, contentValues)
