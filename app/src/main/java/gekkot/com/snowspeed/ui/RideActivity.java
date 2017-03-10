@@ -15,9 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.github.anastr.speedviewlib.SpeedView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import gekkot.com.snowspeed.R;
 import gekkot.com.snowspeed.data.DistanceHelper;
 import gekkot.com.snowspeed.data.Movement;
@@ -31,12 +35,19 @@ public class RideActivity extends AppCompatActivity {
     LocationManager locationManager;
     MyLocationListener locationListener;
 
+    @BindView(R.id.speedView)
+    SpeedView speedView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride);
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +57,8 @@ public class RideActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        initSpeedView();
 
         locationListener = new MyLocationListener();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -67,6 +80,11 @@ public class RideActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void initSpeedView(){
+        speedView.setMaxSpeed(20);
+        speedView.setUnit("m/s");
+    }
+
     private void onChangeLocation(){
         int movementsCount = rideMovementsArray.size();
         if( movementsCount> 1){
@@ -76,6 +94,7 @@ public class RideActivity extends AppCompatActivity {
             double distance = DistanceHelper.INSTANCE.distFrom(movement1.getLocation(), movement2.getLocation());
             double seconds = timeDif/1000;
             double speed = distance / seconds;
+            speedView.setSpeedAt((float) speed);
         }
     }
 
