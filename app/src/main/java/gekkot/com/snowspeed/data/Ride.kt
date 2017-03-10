@@ -12,8 +12,16 @@ class Ride {
     var startTime: Long = 0L
     var rideState: RideState = RideState.NOT_START
 
-    constructor(Name: String) {
-        this.name = Name
+    constructor(name: String) {
+        this.name = name
+        this.rideId = RideIdController.ride;
+        RideIdController.incRideId()
+    }
+
+    constructor() {
+        this.rideId = RideIdController.ride;
+        RideIdController.incRideId()
+        this.name = "ride $rideId"
     }
 
     fun startRide() {
@@ -29,6 +37,18 @@ class Ride {
         val calendar = Calendar.getInstance()
         if (calendar != null) {
             endTime = calendar.time.time;
+        }
+    }
+
+    companion object {
+        object RideIdController {
+
+            var ride: Int = 1
+                private set
+
+            public fun incRideId() {
+                ride++
+            }
         }
     }
 
