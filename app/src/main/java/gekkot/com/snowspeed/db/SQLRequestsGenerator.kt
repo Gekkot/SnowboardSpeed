@@ -11,8 +11,8 @@ import gekkot.com.snowspeed.data.Ride
  */
 
 object SQLRequestsGenerator {
-    val RIDE_TABLE_NAME = "Ride"
-    val POINTS_TABLE_NAME = "Points"
+    const val RIDE_TABLE_NAME = "Ride"
+    const val POINTS_TABLE_NAME = "Points"
 
     fun getCreateRideTableRequest(): String {
 
