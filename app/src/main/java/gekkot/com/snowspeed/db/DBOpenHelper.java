@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
-    private final static int VERSION = 1;
-    private final static String DATABASE_NAME = "rides.db";
+    public final static int VERSION = 1;
+    public final static String DATABASE_NAME = "rides.db";
 
     public DBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
