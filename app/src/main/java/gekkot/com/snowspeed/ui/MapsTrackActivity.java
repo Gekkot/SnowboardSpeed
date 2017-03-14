@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.j256.ormlite.dao.Dao;
@@ -58,6 +60,14 @@ public class MapsTrackActivity extends FragmentActivity implements OnMapReadyCal
                     .add(latLngs.toArray(new LatLng[latLngs.size()]))
                     .color(Color.BLACK);
             mMap.addPolyline(polylineOptions);
+            if (latLngs.size() > 0) {
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(latLngs.get(latLngs.size() - 1))
+                        .zoom(17)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
