@@ -138,10 +138,12 @@ public class RideActivity extends AppCompatActivity {
 
         @Override
         public void onLocationChanged(Location loc) {
-            long time = Calendar.getInstance().getTime().getTime();
-            Movement movement = new Movement(time, loc, ride.getRideId());
-            rideMovementsArray.add(movement);
-            onChangeLocation();
+            if (loc != null) {
+                long time = Calendar.getInstance().getTime().getTime();
+                Movement movement = new Movement(time, loc, ride.getRideId());
+                rideMovementsArray.add(movement);
+                onChangeLocation();
+            }
         }
 
         @Override
