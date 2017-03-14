@@ -18,9 +18,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.anastr.speedviewlib.SpeedView;
+import com.j256.ormlite.dao.Dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +32,7 @@ import gekkot.com.snowspeed.data.DistanceHelper;
 import gekkot.com.snowspeed.data.Movement;
 import gekkot.com.snowspeed.data.Ride;
 import gekkot.com.snowspeed.db.DBOpenHelper;
+import gekkot.com.snowspeed.db.OrmLiteOpenHelper;
 import gekkot.com.snowspeed.db.SQLRequestsGenerator;
 
 public class RideActivity extends AppCompatActivity {
@@ -63,23 +67,30 @@ public class RideActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 ride.endRide();
-                DBOpenHelper dbOpenHelper = new DBOpenHelper(RideActivity.this);
+                OrmLiteOpenHelper dbOpenHelper = new OrmLiteOpenHelper(getApplicationContext());
                 SQLiteDatabase writableDatabase = dbOpenHelper.getWritableDatabase();
                 try {
-                    SQLRequestsGenerator.INSTANCE.addRide(writableDatabase, ride);
+                    Dao<Ride, Long> rideDao = dbOpenHelper.getRideDao();
+                    rideDao.create(ride);
+                    List<Ride> rides = rideDao.queryForAll();
                 } catch (Exception e) {
 
                 }
 
-                for (Movement movement : rideMovementsArray) {
-                    try {
-                        SQLRequestsGenerator.INSTANCE.addMovement(writableDatabase, movement);
-                    } catch (Exception e) {
-
+                try {
+                    Dao<Movement, Long> movementDao = dbOpenHelper.getMovementDao();
+                    for (Movement movement : rideMovementsArray) {
+                        try {
+                            movementDao.create(movement);
+                        } catch (Exception e) {
+                        }
                     }
-                    rideMovementsArray.clear();
+                    List<Movement> movements = movementDao.queryForAll();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
                 Toast.makeText(RideActivity.this, "save points:" + rideMovementsArray.size(), Toast.LENGTH_LONG).show();
+                rideMovementsArray.clear();
             }
         });
 
