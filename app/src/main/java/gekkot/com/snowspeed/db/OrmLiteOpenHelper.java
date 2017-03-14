@@ -28,6 +28,7 @@ public class OrmLiteOpenHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Ride.class);
+            TableUtils.createTable(connectionSource, Movement.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,6 +39,7 @@ public class OrmLiteOpenHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Ride.class, false);
+            TableUtils.dropTable(connectionSource, Movement.class, false);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();
