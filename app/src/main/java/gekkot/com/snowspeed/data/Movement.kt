@@ -15,7 +15,6 @@ class Movement {
         set(value) {
             this.latitude = value.latitude
             this.longitude = value.longitude
-            this.location = value
         }
 
     @DatabaseField
