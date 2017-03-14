@@ -7,3 +7,4 @@
 /build
 /captures
 .externalNativeBuild
+/app/src/debug/res/values/secret_api_key.xml
