@@ -9,4 +9,7 @@
     <item
         android:id="@+id/action_map"
         android:title="@string/action_map" />
+    <item
+        android:id="@+id/action_clear_points"
+        android:title="@string/action_clear_points" />
 </menu>

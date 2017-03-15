@@ -8,4 +8,5 @@
     <string name="location_points_saved_count">Точек сохранено $1%d</string>
     <string name="title_activity_maps_track">Map</string>
     <string name="action_map">Map</string>
+    <string name="action_clear_points">Remove points</string>
 </resources>
