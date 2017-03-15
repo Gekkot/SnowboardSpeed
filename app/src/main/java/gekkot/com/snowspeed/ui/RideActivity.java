@@ -129,6 +129,9 @@ public class RideActivity extends AppCompatActivity {
             if (movement1 == null || movement2 == null) {
                 return;
             }
+            if (movement1.getLocation() == null || movement2.getLocation() == null) {
+                return;
+            }
             long timeDif = movement1.getTime() - movement2.getTime();
             double distance = DistanceHelper.INSTANCE.distFrom(movement1.getLocation(), movement2.getLocation());
             double seconds = timeDif/1000;
