@@ -47,6 +47,18 @@ public class OrmLiteOpenHelper extends OrmLiteSqliteOpenHelper {
 
     }
 
+    public void recreateTables(SQLiteDatabase database){
+        try {
+            TableUtils.dropTable(connectionSource, Ride.class, false);
+            TableUtils.dropTable(connectionSource, Movement.class, false);
+            TableUtils.createTable(connectionSource, Ride.class);
+            TableUtils.createTable(connectionSource, Movement.class);
+            onCreate(database, connectionSource);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Dao<Ride, Long> getRideDao() throws SQLException {
         if (rideDao == null) {
             rideDao = getDao(Ride.class);
